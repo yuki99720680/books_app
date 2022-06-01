@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Books', type: :system do
-  include BookSupport
-
   before do
     FactoryBot.create(:book)
   end
@@ -10,7 +8,9 @@ RSpec.describe 'Books', type: :system do
   scenario 'プロジェクトの一覧を閲覧する' do
     visit books_path
 
-    expect_page_to_have_content_as_factory
+    expect(page).to have_content 'Test Book'
+    expect(page).to have_content 'Trying out Capybara'
+    expect(page).to have_content 'm-kimura'
     expect(page).to have_content '/uploads_test/book/picture/1/test.png'
   end
 
@@ -18,7 +18,9 @@ RSpec.describe 'Books', type: :system do
     visit books_path
     click_link 'Show'
 
-    expect_page_to_have_content_as_factory
+    expect(page).to have_content 'Test Book'
+    expect(page).to have_content 'Trying out Capybara'
+    expect(page).to have_content 'm-kimura'
     expect(page).to have_selector "img[src$='test.png']"
   end
 
@@ -32,12 +34,16 @@ RSpec.describe 'Books', type: :system do
 
     expect {
       click_link 'New Book'
-      fill_in_content(content)
+      fill_in 'Title', with: content[:title]
+      fill_in 'Memo', with: content[:memo]
+      fill_in 'Author', with: content[:author]
       attach_file 'Picture', "#{Rails.root}/spec/files/test.png"
       click_button 'Create Book'
     }.to change(Book, :count).by(1)
     expect(page).to have_content 'Book was successfully created'
-    expect_page_to_have_content(content)
+    expect(page).to have_content content[:title]
+    expect(page).to have_content content[:memo]
+    expect(page).to have_content content[:author]
     expect(page).to have_selector "img[src$='test.png']"
   end
 
@@ -49,12 +55,16 @@ RSpec.describe 'Books', type: :system do
       memo: 'Trying out Capybara Kun',
       author: 'Im m-kimura'
     }
-    fill_in_content(content)
+    fill_in 'Title', with: content[:title]
+    fill_in 'Memo', with: content[:memo]
+    fill_in 'Author', with: content[:author]
     attach_file 'Picture', "#{Rails.root}/spec/files/test2.png"
     click_button 'Update Book'
 
     expect(page).to have_content 'Book was successfully updated'
-    expect_page_to_have_content(content)
+    expect(page).to have_content content[:title]
+    expect(page).to have_content content[:memo]
+    expect(page).to have_content content[:author]
     expect(page).to have_selector "img[src$='test2.png']"
   end
 
