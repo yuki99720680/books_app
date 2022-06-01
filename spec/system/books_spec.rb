@@ -3,12 +3,11 @@ require 'rails_helper'
 RSpec.describe 'Books', type: :system do
   include BookSupport
 
-  let(:book) {
+  before do
     FactoryBot.create(:book)
-  }
+  end
 
   scenario 'プロジェクトの一覧を閲覧する' do
-    book
     visit books_path
 
     expect_page_to_have_content_as_factory
@@ -16,7 +15,6 @@ RSpec.describe 'Books', type: :system do
   end
 
   scenario 'プロジェクトの詳細を閲覧する' do
-    book
     visit books_path
     click_link 'Show'
 
@@ -44,7 +42,6 @@ RSpec.describe 'Books', type: :system do
   end
 
   scenario 'プロジェクトを編集する' do
-    book
     visit books_path
     click_link 'Edit'
     content = {
@@ -62,7 +59,6 @@ RSpec.describe 'Books', type: :system do
   end
 
   scenario 'プロジェクトを削除する', js: true do
-    book
     visit books_path
 
     expect {
