@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Books', type: :system do
-  include FileSupport
   include BookSupport
 
   let(:book) {
     FactoryBot.create(:book)
-    update_picture('test.png')
   }
 
   scenario 'プロジェクトの一覧を閲覧する' do
