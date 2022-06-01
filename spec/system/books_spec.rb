@@ -12,7 +12,7 @@ RSpec.describe 'Books', type: :system do
     visit books_path
 
     expect_page_to_have_content_as_factory
-    expect(page).to have_content '/uploads/book/picture/1/test.png'
+    expect(page).to have_content '/uploads_test/book/picture/1/test.png'
   end
 
   scenario 'プロジェクトの詳細を閲覧する' do
